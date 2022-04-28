@@ -21,5 +21,5 @@ detection:
     timeframe: 5s
     condition: selection
 falsepositives:
-    - Unlikely, but a legitimate application calling AUDIODG.EXE several times per second.
+    - Legitimate application calling AUDIODG.EXE 3-5 times per second for longer than 5 seconds.
 level: high
