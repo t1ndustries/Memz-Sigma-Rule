@@ -1,0 +1,25 @@
+title: MEMZ Execution
+status: experimental
+description: Detects the execution of MEMZ Trojan, which is often used by attackers to produce dank memez. (Also bricks the system by overwriting MBR with Nyancat)
+    - https://en.wikipedia.org/wiki/MEMZ
+    - https://malwiki.org/index.php?title=MEMZ
+author: t1ndustries
+date: 2022/09/04
+logsource:
+    category: process_access
+    product: windows
+detection:
+    selection:
+        SourceImage|endswith: '\AUDIODG.EXE'
+        CallTrace|contains|all:
+            - 'C:\WINDOWS\SYSTEM32\ntdll.dll+'
+            - '|C:\WINDOWS\System32\KERNELBASE.dll'
+            - '|C:\WINDOWS\system32\AUDIODG.EXE+'
+            - '|C:\WINDOWS\System32\RPCRT4.dll+'
+            - '|C:\WINDOWS\System32\combase.dll+'
+        GrantedAccess: '0x3000'
+    timeframe: 5s
+    condition: selection
+falsepositives:
+    - Unlikely, but a legitimate application calling AUDIODG.EXE several times per second.
+level: high
