@@ -11,15 +11,15 @@ logsource:
 detection:
     selection:
         SourceImage|endswith: '\AUDIODG.EXE'
-        CallTrace|contains|all:
+        CallTrace|contains:
             - 'C:\WINDOWS\SYSTEM32\ntdll.dll+'
-            - '|C:\WINDOWS\System32\KERNELBASE.dll'
-            - '|C:\WINDOWS\system32\AUDIODG.EXE+'
-            - '|C:\WINDOWS\System32\RPCRT4.dll+'
-            - '|C:\WINDOWS\System32\combase.dll+'
+            - 'C:\WINDOWS\System32\KERNELBASE.dll'
+            - 'C:\WINDOWS\system32\AUDIODG.EXE+'
+            - 'C:\WINDOWS\System32\RPCRT4.dll+'
+            - 'C:\WINDOWS\System32\combase.dll+'
         GrantedAccess: '0x3000'
     timeframe: 5s
-    condition: selection
+    condition: selection | count() by CallTrace > 4
 falsepositives:
     - Legitimate application calling AUDIODG.EXE 3-5 times per second for longer than 5 seconds.
 level: high
